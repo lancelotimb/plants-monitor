@@ -34,7 +34,6 @@ def record_measurement(connection, data):
 
 
 def interpret_answer(connection, message):
-    print(message)
     split_message = message.split()
 
     if split_message[0] == RESPONSE_HUMIDITY_MEASUREMENT.split()[0] :
