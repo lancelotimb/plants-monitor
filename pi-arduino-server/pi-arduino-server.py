@@ -15,7 +15,7 @@ COMMAND_GET_HUMIDITY = "GET_HUMIDITY"
 
 
 def create_connection():
-    database = './database/database.db'
+    database = '../database/database.db'
     conn = None
     try:
         conn = sqlite3.connect(database)
