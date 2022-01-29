@@ -1,8 +1,8 @@
-const sqlite3 = require('sqlite3').verbose();
+import sqlite3 from 'sqlite3';
 
 const DATABASE_PATH = "../database/database.db";
 
-async function query(sql) {
+export async function executeQuery(sql: string): Promise<{rows: Array<{date: number, values: string}>}> {
     let db = new sqlite3.Database(DATABASE_PATH, sqlite3.OPEN_READONLY, (err) => {
         if (err) {
             console.error(err.message);
@@ -27,10 +27,6 @@ async function query(sql) {
             });
         });
     });
-}
-
-module.exports = {
-    query
 }
 
 
