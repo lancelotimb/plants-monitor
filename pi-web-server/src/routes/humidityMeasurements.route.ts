@@ -1,7 +1,5 @@
 import express from 'express';
-import {
-    getHumidityMeasurementsController
-} from '../controllers/humidityMeasurements.controller';
+import { getHumidityMeasurementsController } from '../controllers/humidityMeasurements.controller';
 
 const router = express.Router();
 
