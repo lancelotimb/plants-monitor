@@ -1,7 +1,8 @@
 import useSWR from 'swr';
 import { HumidityMeasurement } from 'lib/types/types';
 
-const API_ROUTE_HUMIDITY_MEASUREMENTS = 'http://localhost:3001/humidity-measurements';
+const API_ROUTE_HUMIDITY_MEASUREMENTS =
+    process.env.NEXT_PUBLIC_BACKEND_URL + '/humidity-measurements';
 
 export type FetchHumidityMeasurementsResponseType = Array<HumidityMeasurement>;
 
