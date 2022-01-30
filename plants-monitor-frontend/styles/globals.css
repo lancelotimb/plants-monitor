@@ -14,9 +14,17 @@ a {
     box-sizing: border-box;
 }
 
+.page-container {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    padding: 40px 60px;
+}
+
 .app-background {
     background: url('/backgrounds/background-1.jpg') no-repeat center center fixed;
     background-size: cover;
+    z-index: -100;
 
     position: absolute;
     height: 100vh;

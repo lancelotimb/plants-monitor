@@ -1,3 +1,4 @@
+import { NavBar } from 'components/NavBar';
 import * as React from 'react';
 import { useHumidityMeasurements } from 'lib/api/humidity-measurements';
 
@@ -6,5 +7,10 @@ export const HomePage: React.FunctionComponent = () => {
 
     if (isError) return <div>Failed to load</div>;
     if (isLoading) return <div>Loading...</div>;
-    return <div>{JSON.stringify(data)}</div>;
+    return (
+        <div>
+            <NavBar />
+            {JSON.stringify(data)}
+        </div>
+    );
 };
