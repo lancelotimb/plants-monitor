@@ -6,5 +6,5 @@ export const IndexPage: React.FunctionComponent = () => {
 
     if (isError) return <div>Failed to load</div>;
     if (isLoading) return <div>Loading...</div>;
-    return <div>{data}</div>;
+    return <div>{JSON.stringify(data)}</div>;
 };
