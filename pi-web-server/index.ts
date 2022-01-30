@@ -24,6 +24,4 @@ app.get('/', (req, res) => {
 
 app.use('/humidity-measurements', cors(corsOptionsDelegate), humidityMeasurementsRouter);
 
-app.listen(port, '0.0.0.0', () => {
-    console.log(`Example app listening at http://localhost:${port}`);
-});
+app.listen(port, '0.0.0.0');
