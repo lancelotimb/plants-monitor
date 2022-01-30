@@ -6,7 +6,7 @@ const app = express();
 const port = 3001;
 
 app.use(cors());
-const CORS_WHITE_LIST = ['http://localhost:3000'];
+const CORS_WHITE_LIST = ['http://localhost:3000', 'https://plants-monitor.vercel.app']; // TODO move to .env file
 const corsOptionsDelegate: CorsOptionsDelegate = (req, callback) => {
     const origin = req.headers.Origin;
     if (origin && typeof origin === 'string' && CORS_WHITE_LIST.indexOf(origin) !== -1) {
