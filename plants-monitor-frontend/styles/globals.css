@@ -13,3 +13,19 @@ a {
 * {
     box-sizing: border-box;
 }
+
+.app-background {
+    background: url('/backgrounds/background-1.jpg') no-repeat center center fixed;
+    background-size: cover;
+
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+}
+
+.app-background-blur {
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(25px);
+    height: 100vh;
+    width: 100%;
+}

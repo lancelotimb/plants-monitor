@@ -8,6 +8,9 @@ class MyDocument extends Document {
                     <link href="http://fonts.cdnfonts.com/css/google-sans" rel="stylesheet" />
                 </Head>
                 <body>
+                    <div className="app-background">
+                        <div className="app-background-blur" />
+                    </div>
                     <Main />
                     <NextScript />
                 </body>
