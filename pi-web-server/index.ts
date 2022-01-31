@@ -2,7 +2,7 @@ import app from './app';
 
 require('greenlock-express')
     .init({
-        packageRoot: __dirname,
+        packageRoot: './',
 
         // contact for security and critical bug notices
         maintainerEmail: 'lancelot.imb@gmail.com',
