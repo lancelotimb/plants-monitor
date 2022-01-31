@@ -1,27 +1,18 @@
-import express from 'express';
-import cors, { CorsOptionsDelegate } from 'cors';
-import humidityMeasurementsRouter from './src/routes/humidityMeasurements.route';
+import app from './app';
 
-const app = express();
-const port = 3001;
+require('greenlock-express')
+    .init({
+        packageRoot: __dirname,
 
-app.use(cors());
-const CORS_WHITE_LIST = ['http://localhost:3000', 'https://plants-monitor.vercel.app']; // TODO move to .env file
-const corsOptionsDelegate: CorsOptionsDelegate = (req, callback) => {
-    const origin = req.headers.Origin;
-    if (origin && typeof origin === 'string' && CORS_WHITE_LIST.indexOf(origin) !== -1) {
-        // Enable the requested origin in the CORS response
-        callback(null, { origin: true });
-    } else {
-        // Disable CORS for this request
-        callback(null, { origin: false });
-    }
-};
+        // contact for security and critical bug notices
+        maintainerEmail: 'lancelot.imb@gmail.com',
 
-app.get('/', (req, res) => {
-    res.json({ message: 'ok' });
-});
+        // where to look for configuration
+        configDir: './greenlock.d',
 
-app.use('/humidity-measurements', cors(corsOptionsDelegate), humidityMeasurementsRouter);
-
-app.listen(port, '0.0.0.0');
+        // whether or not to run at cloudscale
+        cluster: false,
+    })
+    // Serves on 80 and 443
+    // Get's SSL certificates magically!
+    .serve(app);
