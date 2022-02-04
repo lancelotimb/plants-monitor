@@ -94,6 +94,11 @@ def main():
     # Initialize database
     connection = create_connection()
 
+    # These commands will be sent one after the other
+    repeated_commands = [COMMAND_GET_HUMIDITY, COMMAND_GET_DHT]
+    nb_repeated_commands = len(repeated_commands)
+    iteration = 0
+
     # Launch connection with Arduino
     with serial.Serial("/dev/ttyACM0", 9600, timeout=1) as arduino:
         arduino.reset_input_buffer()
@@ -106,7 +111,8 @@ def main():
             try:
                 time.sleep(3) # Needed for connection to initialize?
                 while True:
-                    arduino.write(COMMAND_GET_HUMIDITY.encode())
+                    current_command = repeated_commands[i % nb_repeated_commands]
+                    arduino.write(current_command.encode())
 
                     while arduino.inWaiting() == 0:
                         pass
@@ -118,7 +124,8 @@ def main():
                         # Remove data after reading
                         arduino.flushInput()
 
-                    time.sleep(10) # 10s between each data point
+                    i += 1
+                    time.sleep(5) # 10s between each data point
             except KeyboardInterrupt:
                 print("KeyboardInterrupt has been caught.")
 
