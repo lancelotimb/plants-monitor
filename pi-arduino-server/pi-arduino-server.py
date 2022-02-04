@@ -38,7 +38,7 @@ def record_humidity_measurement(connection, data):
 
 def record_dht_measurement(connection, data):
     parsed = json.loads(data)
-    measurement = (int(time.time()), parsed.temperature, parsed.humidity)
+    measurement = (int(time.time()), parsed['temperature'], parsed['humidity'])
     cursor = connection.cursor()
     cursor.execute("INSERT INTO dht_measurements (date, temperature, humidity) VALUES (?, ?, ?)", measurement)
     connection.commit()
@@ -54,7 +54,7 @@ def interpret_answer(connection, message):
 
     if split_message[0] == RESPONSE_DHT_MEASUREMENT.split()[0] :
         measurement_data = split_message[1]
-        record_measurement(connection, measurement_data)
+        record_dht_measurement(connection, measurement_data)
 
 
 def debug():
@@ -111,7 +111,7 @@ def main():
             try:
                 time.sleep(3) # Needed for connection to initialize?
                 while True:
-                    current_command = repeated_commands[i % nb_repeated_commands]
+                    current_command = repeated_commands[iteration % nb_repeated_commands]
                     arduino.write(current_command.encode())
 
                     while arduino.inWaiting() == 0:
@@ -124,7 +124,7 @@ def main():
                         # Remove data after reading
                         arduino.flushInput()
 
-                    i += 1
+                    iteration += 1
                     time.sleep(5) # 10s between each data point
             except KeyboardInterrupt:
                 print("KeyboardInterrupt has been caught.")

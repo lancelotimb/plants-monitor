@@ -74,10 +74,7 @@ String read_humidity() {
 }
 
 String read_dht() {
-  Serial.println("Temperature = " + String(dht.readTemperature()) + " °C");
-  Serial.println("Humidite = " + String(dht.readHumidity()) + " %");
-
-  String data = "{temperature:" + String(dht.readTemperature()) + ", humidity:" + String(dht.readHumidity()) + "}";
+  String data = "{\"temperature\":" + String(dht.readTemperature()) + ",\"humidity\":" + String(dht.readHumidity()) + "}";
   return data;
 }
 
