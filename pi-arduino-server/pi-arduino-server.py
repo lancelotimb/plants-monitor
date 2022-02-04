@@ -5,13 +5,16 @@
 
 import serial, time
 import sqlite3
+import json
 
 # Arduino Response Messages
 RESPONSE_UNKNOWN_COMMAND = "UNKNOWN_COMMAND"
 RESPONSE_HUMIDITY_MEASUREMENT = "HUMIDITY $value"
+RESPONSE_DHT_MEASUREMENT = "DHT $value"
 
 # Arduino Command Messages
 COMMAND_GET_HUMIDITY = "GET_HUMIDITY"
+COMMAND_GET_DHT = "GET_DHT"
 
 
 def create_connection():
@@ -25,10 +28,19 @@ def create_connection():
     return conn
 
 
-def record_measurement(connection, data):
+def record_humidity_measurement(connection, data):
     measurement = (int(time.time()), data)
     cursor = connection.cursor()
     cursor.execute("INSERT INTO humidity_measurements (date, value) VALUES (?, ?)", measurement)
+    connection.commit()
+    return cursor.lastrowid
+
+
+def record_dht_measurement(connection, data):
+    parsed = json.loads(data)
+    measurement = (int(time.time()), parsed.temperature, parsed.humidity)
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO dht_measurements (date, temperature, humidity) VALUES (?, ?, ?)", measurement)
     connection.commit()
     return cursor.lastrowid
 
@@ -37,6 +49,10 @@ def interpret_answer(connection, message):
     split_message = message.split()
 
     if split_message[0] == RESPONSE_HUMIDITY_MEASUREMENT.split()[0] :
+        measurement_data = split_message[1]
+        record_humidity_measurement(connection, measurement_data)
+
+    if split_message[0] == RESPONSE_DHT_MEASUREMENT.split()[0] :
         measurement_data = split_message[1]
         record_measurement(connection, measurement_data)
 
