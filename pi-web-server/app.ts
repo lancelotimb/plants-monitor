@@ -1,6 +1,7 @@
 import express from 'express';
 import cors, { CorsOptionsDelegate } from 'cors';
 import humidityMeasurementsRouter from './src/routes/humidityMeasurements.route';
+import dhtMeasurementsRouter from './src/routes/dhtMeasurements.route';
 
 const app = express();
 const port = 3001;
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/humidity-measurements', cors(corsOptionsDelegate), humidityMeasurementsRouter);
+app.use('/dht-measurements', cors(corsOptionsDelegate), dhtMeasurementsRouter);
 
 app.listen(port, '0.0.0.0');
 
