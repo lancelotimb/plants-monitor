@@ -4,7 +4,7 @@ import humidityMeasurementsRouter from './src/routes/humidityMeasurements.route'
 import dhtMeasurementsRouter from './src/routes/dhtMeasurements.route';
 
 const app = express();
-const port = 80;
+const port = 3001;
 
 app.use(cors());
 const CORS_WHITE_LIST = ['http://localhost:3000', 'https://plants-monitor.vercel.app']; // TODO move to .env file
