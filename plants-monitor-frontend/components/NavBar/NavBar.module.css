@@ -27,6 +27,14 @@
     font-size: 20px;
 }
 
+.navbarRightItem {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    column-gap: 5px;
+}
+
 .navItem {
     font-family: 'Product Sans Medium', sans-serif;
     font-size: 30px;

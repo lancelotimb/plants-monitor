@@ -2,7 +2,10 @@ import { useLastDhtMeasurement } from 'lib/api/last-dht-measurement';
 import * as React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import classNames from 'classnames';
+import humidityIcon from 'public/icons/humidity.png';
+import thermometerIcon from 'public/icons/thermometer.png';
 
 import styles from './NavBar.module.css';
 
@@ -54,8 +57,14 @@ export const NavBar: React.FunctionComponent = () => {
             </div>
             {dhtMeasurement ? (
                 <div className={styles.navbarRight}>
-                    <span>{dhtMeasurement.humidity} %</span>
-                    <span>{dhtMeasurement.temperature} °C</span>
+                    <div className={styles.navbarRightItem}>
+                        <Image src={humidityIcon} alt="Humidity" height={20} width={20} />
+                        <span>{dhtMeasurement.humidity} %</span>
+                    </div>
+                    <div className={styles.navbarRightItem}>
+                        <Image src={thermometerIcon} alt="Thermometer" height={20} width={20} />
+                        <span>{dhtMeasurement.temperature} °C</span>
+                    </div>
                 </div>
             ) : null}
         </div>
