@@ -1,9 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default function handler(request: NextApiRequest, response: NextApiResponse) {
-    response.status(200).json({
-        body: request.body,
-        query: request.query,
-        cookies: request.cookies,
-    });
+    fetch('http://laniche.freeboxos.fr:3001/humidity-measurements')
+        .then((res) => res.json())
+        .then((res) => {
+            response.status(200).json({
+                res,
+            });
+        })
+        .catch((error) => {
+            response.status(500).json({
+                error,
+            });
+        });
 }
