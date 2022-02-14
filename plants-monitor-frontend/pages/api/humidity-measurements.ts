@@ -6,8 +6,9 @@ const ROUTE_HUMIDITY_MEASUREMENTS =
 
 export default function handler(request: NextApiRequest, response: NextApiResponse) {
     fetch(ROUTE_HUMIDITY_MEASUREMENTS)
+        .then((res) => res.json())
         .then((res) => {
-            response.status(200).json(res.json());
+            response.status(200).json(res);
         })
         .catch((error) => {
             response.status(500).json({
