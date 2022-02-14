@@ -23,8 +23,8 @@ app.get('/', (req, res) => {
     res.json({ message: 'ok' });
 });
 
-app.use('/humidity-measurements', cors(corsOptionsDelegate), humidityMeasurementsRouter);
-app.use('/dht-measurements', cors(corsOptionsDelegate), dhtMeasurementsRouter);
+app.use('api/humidity-measurements', cors(corsOptionsDelegate), humidityMeasurementsRouter);
+app.use('api/dht-measurements', cors(corsOptionsDelegate), dhtMeasurementsRouter);
 
 app.listen(port, '0.0.0.0');
 
