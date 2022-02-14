@@ -5,7 +5,7 @@ class MyDocument extends Document {
         return (
             <Html>
                 <Head>
-                    <link href="http://fonts.cdnfonts.com/css/google-sans" rel="stylesheet" />
+                    <link href="https://fonts.cdnfonts.com/css/google-sans" rel="stylesheet" />
                 </Head>
                 <body>
                     <div className="app-background">
