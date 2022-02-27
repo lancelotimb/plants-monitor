@@ -37,6 +37,7 @@ void setup() {
 
   // Initialize Pumps
   for (int i = 0; i < NB_PUMPS; i++) {
+    pinMode(PUMP_PINS[i], OUTPUT);
     digitalWrite(PUMP_PINS[i], HIGH);
   }
 }
