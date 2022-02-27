@@ -1,11 +1,13 @@
 #include "DHT.h"
 
 #define NB_SENSORS 5
+#define NB_PUMPS 4
 #define DHTTYPE DHT11
 
 String msg;
 
 int SENSOR_PINS[NB_SENSORS] = {A0, A1, A2, A3, A4};
+int PUMP_PINS[NB_PUMPS] = {3, 4, 5, 6};
 
 String COMMAND_GET_HUMIDITY = "GET_HUMIDITY";
 String COMMAND_GET_DHT = "GET_DHT";
@@ -31,6 +33,11 @@ void setup() {
   // Initialize Humidity Sensors
   for (int i = 0; i < NB_SENSORS; i++) {
     pinMode(SENSOR_PINS[i], INPUT);
+  }
+
+  // Initialize Pumps
+  for (int i = 0; i < NB_PUMPS; i++) {
+    digitalWrite(PUMP_PINS[i], HIGH);
   }
 }
 
@@ -78,6 +85,16 @@ String read_dht() {
   return data;
 }
 
+String activate_pump_1() {
+  for (int i = 0; i < NB_PUMPS; i++) {
+    digitalWrite(PUMP_PINS[i], LOW);
+  }
+  delay(3000);
+  for (int i = 0; i < NB_PUMPS; i++) {
+    digitalWrite(PUMP_PINS[i], HIGH);
+  }
+}
+
 String executeCommand(String command) {
   if (command == COMMAND_GET_HUMIDITY) {
     String response = RESPONSE_HUMIDITY_MEASUREMENT;
@@ -90,6 +107,12 @@ String executeCommand(String command) {
     response.replace("$value", read_dht());
     return response;
   }
+
+  if (command == COMMAND_ACTIVATE_PUMP_1) {
+    activate_pump_1();
+    return "ACTIVATE_PUMP_OK";
+  }
+  
 
   return RESPONSE_UNKNOWN_COMMAND;
 }
