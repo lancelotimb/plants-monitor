@@ -62,7 +62,10 @@ def debug():
     connection = create_connection()
 
     # Launch connection with Arduino
-    with serial.Serial("/dev/ttyACM0", 9600, timeout=1) as arduino:
+    # Macbook: /dev/cu.usbmodem143101
+    # Arduino: /dev/ttyACM0
+    with serial.Serial("/dev/cu.usbmodem143101", 9600, timeout=1) as arduino:
+        arduino.reset_input_buffer()
 
         # Wait for serial to open
         time.sleep(0.1)
@@ -73,7 +76,6 @@ def debug():
             try:
                 while True:
                     cmd = input("Enter command : ")
-                    print(cmd.encode())
                     arduino.write(cmd.encode())
 
                     # time.sleep(0.1) #wait for arduino to answer
@@ -81,7 +83,8 @@ def debug():
                         pass
 
                     if arduino.inWaiting() > 0:
-                        answer = arduino.readline().decode("utf-8")
+                        answer = arduino.readline().decode("utf-8").rstrip()
+                        print(answer)
                         interpret_answer(connection, answer)
 
                         # Remove data after reading

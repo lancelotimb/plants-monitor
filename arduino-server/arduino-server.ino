@@ -11,10 +11,10 @@ int PUMP_PINS[NB_PUMPS] = {3, 4, 5, 6};
 
 String COMMAND_GET_HUMIDITY = "GET_HUMIDITY";
 String COMMAND_GET_DHT = "GET_DHT";
-String COMMAND_ACTIVATE_PUMP_1 = "ACTIVATE_PUMP_1";
-String COMMAND_ACTIVATE_PUMP_2 = "ACTIVATE_PUMP_2";
-String COMMAND_ACTIVATE_PUMP_3 = "ACTIVATE_PUMP_3";
-String COMMAND_ACTIVATE_PUMP_4 = "ACTIVATE_PUMP_4";
+String COMMAND_ACTIVATE_PUMP_A = "ACTIVATE_PUMP_A";
+String COMMAND_ACTIVATE_PUMP_B = "ACTIVATE_PUMP_B";
+String COMMAND_ACTIVATE_PUMP_C = "ACTIVATE_PUMP_C";
+String COMMAND_ACTIVATE_PUMP_D = "ACTIVATE_PUMP_D";
 
 String RESPONSE_UNKNOWN_COMMAND = "UNKNOWN_COMMAND";
 String RESPONSE_HUMIDITY_MEASUREMENT = "HUMIDITY $value";
@@ -86,14 +86,10 @@ String read_dht() {
   return data;
 }
 
-String activate_pump_1() {
-  for (int i = 0; i < NB_PUMPS; i++) {
-    digitalWrite(PUMP_PINS[i], LOW);
-  }
-  delay(3000);
-  for (int i = 0; i < NB_PUMPS; i++) {
-    digitalWrite(PUMP_PINS[i], HIGH);
-  }
+void activate_pump(int nb, int time) {
+  digitalWrite(PUMP_PINS[nb], LOW);
+  delay(time);
+  digitalWrite(PUMP_PINS[nb], HIGH);
 }
 
 String executeCommand(String command) {
@@ -102,18 +98,36 @@ String executeCommand(String command) {
     response.replace("$value", read_humidity());
     return response;
   }
-
+  
   if (command == COMMAND_GET_DHT) {
     String response = RESPONSE_DHT_MEASUREMENT;
     response.replace("$value", read_dht());
     return response;
   }
-
-  if (command == COMMAND_ACTIVATE_PUMP_1) {
-    activate_pump_1();
-    return "ACTIVATE_PUMP_OK";
+  
+  if (command.indexOf(COMMAND_ACTIVATE_PUMP_A) == 0) {
+    String time = command.substring(COMMAND_ACTIVATE_PUMP_A.length() + 1);
+    activate_pump(0, time.toInt());
+    return "PUMP_A_OK";
+  } 
+  
+  if (command.indexOf(COMMAND_ACTIVATE_PUMP_B) == 0) {
+     String time = command.substring(COMMAND_ACTIVATE_PUMP_B.length() + 1);
+     activate_pump(1, time.toInt());
+     return "PUMP_B_OK";
+  } 
+  
+  if (command.indexOf(COMMAND_ACTIVATE_PUMP_C) == 0) {
+    String time = command.substring(COMMAND_ACTIVATE_PUMP_C.length() + 1);
+    activate_pump(2, time.toInt());
+    return "PUMP_C_OK";
   }
   
-
-  return RESPONSE_UNKNOWN_COMMAND;
+  if (command.indexOf(COMMAND_ACTIVATE_PUMP_D) == 0) {
+    String time = command.substring(COMMAND_ACTIVATE_PUMP_D.length() + 1);
+    activate_pump(3, time.toInt());
+    return "PUMP_D_OK";
+  } 
+  
+   return RESPONSE_UNKNOWN_COMMAND;
 }
