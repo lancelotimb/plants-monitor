@@ -1,10 +1,14 @@
 import express from 'express';
 import cors, { CorsOptionsDelegate } from 'cors';
+import bodyParser from 'body-parser';
 import humiditySensorsRouter from './src/routes/humiditySensors.route';
 import humidityMeasurementsRouter from './src/routes/humidityMeasurements.route';
 import dhtMeasurementsRouter from './src/routes/dhtMeasurements.route';
 
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 const port = 3001;
 
 app.use(cors());
