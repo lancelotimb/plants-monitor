@@ -67,7 +67,7 @@ def debug():
     # Launch connection with Arduino
     # Macbook: /dev/cu.usbmodem143101
     # Arduino: /dev/ttyACM0
-    with serial.Serial("/dev/cu.usbmodem143101", 9600, timeout=1) as arduino:
+    with serial.Serial("/dev/ttyACM0", 9600, timeout=1) as arduino:
         arduino.reset_input_buffer()
 
         # Wait for serial to open
