@@ -16,6 +16,9 @@ RESPONSE_DHT_MEASUREMENT = "DHT $value"
 COMMAND_GET_HUMIDITY = "GET_HUMIDITY"
 COMMAND_GET_DHT = "GET_DHT"
 
+# Command Messages Queue
+COMMANDS_QUEUE = []
+
 
 def create_connection():
     database = '../database/database.db'
@@ -114,7 +117,12 @@ def main():
             try:
                 time.sleep(3) # Needed for connection to initialize?
                 while True:
-                    current_command = repeated_commands[iteration % nb_repeated_commands]
+                    # The next command is read from the commands queue in priority, then from the reapeated commands list
+                    current_command = COMMANDS_QUEUE.pop(0) if len(COMMANDS_QUEUE) > 0 else None
+                    if (not current_command):
+                        current_command = queue_command if queue_command else repeated_commands[iteration % nb_repeated_commands]
+                        iteration += 1
+
                     arduino.write(current_command.encode())
 
                     while arduino.inWaiting() == 0:
@@ -127,7 +135,6 @@ def main():
                         # Remove data after reading
                         arduino.flushInput()
 
-                    iteration += 1
                     time.sleep(5) # 10s between each data point
             except KeyboardInterrupt:
                 print("KeyboardInterrupt has been caught.")
