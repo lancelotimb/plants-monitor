@@ -30,6 +30,15 @@ def create_connection():
 
     return conn
 
+def read_commands_queue(connection):
+    cursor = connection.cursor()
+    cursor.execute("SELECT * from commands_queue WHERE read = 0 LIMIT 1")
+    records = cursor.fetchall()
+    command = records[0] if len(records > 0) else None
+    if (command):
+        cursor.execute("UPDATE commands_queue SET read = 1 WHERE id = ?", command[0])
+        COMMANDS_QUEUE.append(command[1])
+
 
 def record_humidity_measurement(connection, data):
     measurement = (int(time.time()), data)
@@ -117,6 +126,9 @@ def main():
             try:
                 time.sleep(3) # Needed for connection to initialize?
                 while True:
+                    # Fetch the last command from the database
+                    read_commands_queue()
+
                     # The next command is read from the commands queue in priority, then from the reapeated commands list
                     current_command = COMMANDS_QUEUE.pop(0) if len(COMMANDS_QUEUE) > 0 else None
                     if (not current_command):
