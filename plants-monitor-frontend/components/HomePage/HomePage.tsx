@@ -2,9 +2,7 @@ import { useEnrichedHumidityMeasurements } from 'lib/hooks/use-enriched-humidity
 import * as React from 'react';
 import { NavBar } from 'components/NavBar';
 import { SensorTile } from 'components/SensorTile';
-import { useHumidityMeasurements } from 'lib/api/humidity-measurements';
 import { PumpTile } from 'components/PumpTile';
-import { useHumiditySensors } from 'lib/api/humidity-sensors';
 
 import styles from './HomePage.module.css';
 
