@@ -8,8 +8,11 @@ import { useHumiditySensors } from 'lib/api/humidity-sensors';
 
 import styles from './HomePage.module.css';
 
+const REFRESH_INTERVAL = 5000;
+
 export const HomePage: React.FunctionComponent = () => {
-    const { sensorsWithData, isLoading, isError } = useEnrichedHumidityMeasurements();
+    const { sensorsWithData, isLoading, isError } =
+        useEnrichedHumidityMeasurements(REFRESH_INTERVAL);
 
     if (isError) return <div>Failed to load</div>;
     if (isLoading) return <div>Loading...</div>;

@@ -6,12 +6,12 @@ const normalizeMeasurement = (measure: number, maxValue: number, minValue: numbe
     return Math.round((1 - normalized) * 1000) / 1000;
 };
 
-export const useEnrichedHumidityMeasurements = () => {
+export const useEnrichedHumidityMeasurements = (interval?: number) => {
     const {
         measurements,
         isLoading: isMeasurementsLoading,
         isError: isMeasurementsError,
-    } = useHumidityMeasurements();
+    } = useHumidityMeasurements(interval);
     const { sensors, isLoading: isSensorsLoading, isError: isSensorsError } = useHumiditySensors();
 
     const isLoading = isMeasurementsLoading || isSensorsLoading;

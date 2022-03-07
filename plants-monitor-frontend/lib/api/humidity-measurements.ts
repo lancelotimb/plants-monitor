@@ -7,10 +7,11 @@ export type FetchHumidityMeasurementsResponseType = Array<HumidityMeasurement>;
 export const fetchHumidityMeasurements = () =>
     fetch(API_ROUTE_HUMIDITY_MEASUREMENTS).then((res) => res.json());
 
-export const useHumidityMeasurements = () => {
+export const useHumidityMeasurements = (interval?: number) => {
     const { data, error } = useSWR<FetchHumidityMeasurementsResponseType>(
         'get-humidity-measurements',
-        () => fetchHumidityMeasurements()
+        () => fetchHumidityMeasurements(),
+        { refreshInterval: interval || 0 }
     );
 
     return {
