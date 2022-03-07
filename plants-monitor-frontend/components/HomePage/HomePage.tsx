@@ -1,3 +1,4 @@
+import { useEnrichedHumidityMeasurements } from 'lib/hooks/use-enriched-humidity-measurements';
 import * as React from 'react';
 import { NavBar } from 'components/NavBar';
 import { SensorTile } from 'components/SensorTile';
@@ -8,13 +9,10 @@ import { useHumiditySensors } from 'lib/api/humidity-sensors';
 import styles from './HomePage.module.css';
 
 export const HomePage: React.FunctionComponent = () => {
-    const { measurements, isLoading, isError } = useHumidityMeasurements();
-    const { sensors } = useHumiditySensors();
+    const { sensorsWithData, isLoading, isError } = useEnrichedHumidityMeasurements();
 
     if (isError) return <div>Failed to load</div>;
     if (isLoading) return <div>Loading...</div>;
-
-    const lastMeasurement = measurements?.at(-1);
 
     const pumpIds = ['A', 'B', 'C', 'D'];
 
@@ -22,14 +20,15 @@ export const HomePage: React.FunctionComponent = () => {
         <div className={styles.homePageContainer}>
             <NavBar />
             <div className={styles.widgetsContainer}>
-                {lastMeasurement?.value.map((valuePoint, index) => (
-                    <SensorTile key={index} sensorLabel="Plant Name" currentValue={valuePoint} />
+                {sensorsWithData?.map((sensor, index) => (
+                    <SensorTile
+                        key={index}
+                        sensorLabel={sensor.label}
+                        currentValue={sensor.lastMeasurement?.value || 0}
+                    />
                 ))}
                 {pumpIds.map((pumpId) => (
                     <PumpTile pumpId={pumpId} key={pumpId} />
-                ))}
-                {sensors?.map((sensor) => (
-                    <div key={sensor.id}>{sensor.label}</div>
                 ))}
             </div>
         </div>
