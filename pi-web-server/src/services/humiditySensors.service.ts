@@ -28,5 +28,5 @@ export async function updateHumiditySensor(sensor: HumiditySensor): Promise<bool
         .replace('$min', sensor.minValue.toString())
         .replace('$id', sensor.id.toString());
 
-    return runQuery(query);
+    return runQuery(query, []);
 }

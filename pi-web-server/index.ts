@@ -1,6 +1,7 @@
 import express from 'express';
 import cors, { CorsOptionsDelegate } from 'cors';
 import bodyParser from 'body-parser';
+import commandsQueueRouter from './src/routes/commandsQueue.route';
 import humiditySensorsRouter from './src/routes/humiditySensors.route';
 import humidityMeasurementsRouter from './src/routes/humidityMeasurements.route';
 import dhtMeasurementsRouter from './src/routes/dhtMeasurements.route';
@@ -31,6 +32,7 @@ app.get('/', (req, res) => {
 app.use('/api/humidity-measurements', cors(corsOptionsDelegate), humidityMeasurementsRouter);
 app.use('/api/dht-measurements', cors(corsOptionsDelegate), dhtMeasurementsRouter);
 app.use('/api/humidity-sensors', cors(corsOptionsDelegate), humiditySensorsRouter);
+app.use('/api/commands', cors(corsOptionsDelegate), commandsQueueRouter);
 
 app.listen(port, '0.0.0.0');
 
