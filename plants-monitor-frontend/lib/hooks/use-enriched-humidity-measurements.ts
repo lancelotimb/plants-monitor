@@ -1,6 +1,11 @@
 import { useHumidityMeasurements } from 'lib/api/humidity-measurements';
 import { useHumiditySensors } from 'lib/api/humidity-sensors';
 
+const normalizeMeasurement = (measure: number, maxValue: number, minValue: number) => {
+    const normalized = (measure - minValue) / (maxValue - minValue);
+    return Math.round(normalized * 1000) / 1000;
+};
+
 export const useEnrichedHumidityMeasurements = () => {
     const {
         measurements,
@@ -16,10 +21,15 @@ export const useEnrichedHumidityMeasurements = () => {
     if (!isLoading && !isError && sensors && measurements) {
         sensorsWithData = sensors.map((sensor, index) => {
             const sensorData = measurements
-                .map((measurement) => ({
-                    date: measurement.date,
-                    value: measurement.value[index],
-                }))
+                .map((measurement) => {
+                    const measure = measurement.value[index];
+                    return {
+                        date: measurement.date,
+                        value: measure
+                            ? normalizeMeasurement(measure, sensor.maxValue, sensor.minValue)
+                            : undefined,
+                    };
+                })
                 .filter(({ value }) => Boolean(value));
 
             return {

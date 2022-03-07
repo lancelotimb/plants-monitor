@@ -15,7 +15,7 @@ export const SensorTile: React.FunctionComponent<SensorTileProps> = ({
         <div className={styles.sensorTile}>
             <div className={styles.title}>{sensorLabel}</div>
             <div className={styles.value}>
-                <span>{currentValue}%</span>
+                <span>{Math.round(currentValue * 100)}%</span>
             </div>
         </div>
     );
