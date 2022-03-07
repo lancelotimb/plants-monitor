@@ -6,6 +6,7 @@
 import serial, time
 import sqlite3
 import json
+import re
 
 # Arduino Response Messages
 RESPONSE_UNKNOWN_COMMAND = "UNKNOWN_COMMAND"
@@ -26,6 +27,13 @@ def create_connection():
         print(e)
 
     return conn
+
+
+def is_valid_command(command):
+    if re.match("^[A-Za-z0-9_]+$", command):
+        return True
+    return False
+
 
 def read_commands_queue(connection):
     cursor = connection.cursor()
@@ -99,7 +107,12 @@ def debug():
             try:
                 while True:
                     cmd = input("Enter command : ")
-                    arduino.write(cmd.encode())
+                    command = cmd.encode()
+                    
+                    if not is_valid_command(cmd):
+                        command = "UNKNOWN".encode()
+                                            
+                    arduino.write(command)
 
                     # time.sleep(0.1) #wait for arduino to answer
                     while arduino.inWaiting() == 0:
@@ -148,8 +161,11 @@ def main():
                     else:
                         current_command = queue_command
                     
+                    if not is_valid_command(current_command):
+                        current_command = "UNKNOWN"
+                    
                     print(current_command)
-
+                    
                     arduino.write(current_command.encode())
 
                     while arduino.inWaiting() == 0:
