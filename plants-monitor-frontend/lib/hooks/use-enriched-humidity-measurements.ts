@@ -3,7 +3,7 @@ import { useHumiditySensors } from 'lib/api/humidity-sensors';
 
 const normalizeMeasurement = (measure: number, maxValue: number, minValue: number) => {
     const normalized = (measure - minValue) / (maxValue - minValue);
-    return Math.round(normalized * 1000) / 1000;
+    return Math.round((1 - normalized) * 1000) / 1000;
 };
 
 export const useEnrichedHumidityMeasurements = () => {
