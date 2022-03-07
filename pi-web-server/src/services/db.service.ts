@@ -26,7 +26,7 @@ export async function selectQuery<T>(sql: string): Promise<DatabaseRows<T>> {
     });
 }
 
-export async function runQuery(sql: string): Promise<boolean> {
+export async function runQuery(sql: string, params: any[]): Promise<boolean> {
     const db = new sqlite3.Database(DATABASE_PATH, (err) => {
         if (err) {
             console.error(err.message);
@@ -34,7 +34,7 @@ export async function runQuery(sql: string): Promise<boolean> {
     });
 
     return new Promise((resolve, reject) => {
-        db.run(sql, [], (err) => {
+        db.run(sql, params, (err) => {
             if (err) {
                 reject(err);
             } else {
