@@ -13,3 +13,14 @@ export type DhtMeasurement = {
     // Humidity in %
     humidity: number;
 };
+
+export type HumiditySensor = {
+    /* ID of the sensor */
+    id: number;
+    /* Label of the sensor */
+    label: string;
+    /* Max possible absolute value */
+    maxValue: number;
+    /* Min possible absolute value */
+    minValue: number;
+};
