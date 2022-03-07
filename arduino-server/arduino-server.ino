@@ -1,12 +1,12 @@
 #include "DHT.h"
 
-#define NB_SENSORS 5
+#define NB_SENSORS 4
 #define NB_PUMPS 4
 #define DHTTYPE DHT11
 
 String msg;
 
-int SENSOR_PINS[NB_SENSORS] = {A0, A1, A2, A3, A4};
+int SENSOR_PINS[NB_SENSORS] = {A0, A1, A2, A3};
 int PUMP_PINS[NB_PUMPS] = {3, 4, 5, 6};
 
 String COMMAND_GET_HUMIDITY = "GET_HUMIDITY";
@@ -98,36 +98,36 @@ String executeCommand(String command) {
     response.replace("$value", read_humidity());
     return response;
   }
-  
+
   if (command == COMMAND_GET_DHT) {
     String response = RESPONSE_DHT_MEASUREMENT;
     response.replace("$value", read_dht());
     return response;
   }
-  
+
   if (command.indexOf(COMMAND_ACTIVATE_PUMP_A) == 0) {
     String time = command.substring(COMMAND_ACTIVATE_PUMP_A.length() + 1);
     activate_pump(0, time.toInt());
     return "PUMP_A_OK";
-  } 
-  
+  }
+
   if (command.indexOf(COMMAND_ACTIVATE_PUMP_B) == 0) {
      String time = command.substring(COMMAND_ACTIVATE_PUMP_B.length() + 1);
      activate_pump(1, time.toInt());
      return "PUMP_B_OK";
-  } 
-  
+  }
+
   if (command.indexOf(COMMAND_ACTIVATE_PUMP_C) == 0) {
     String time = command.substring(COMMAND_ACTIVATE_PUMP_C.length() + 1);
     activate_pump(2, time.toInt());
     return "PUMP_C_OK";
   }
-  
+
   if (command.indexOf(COMMAND_ACTIVATE_PUMP_D) == 0) {
     String time = command.substring(COMMAND_ACTIVATE_PUMP_D.length() + 1);
     activate_pump(3, time.toInt());
     return "PUMP_D_OK";
-  } 
-  
+  }
+
    return RESPONSE_UNKNOWN_COMMAND;
 }
