@@ -15,7 +15,7 @@ export const PumpTile: React.FunctionComponent<PumpTileProps> = ({ pumpId }) => 
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ command: 'ACTIVATE_PUMP_' + pumpId + '_4000' }),
+            body: JSON.stringify({ command: 'ACTIVATE_PUMP_' + pumpId + '_6000' }),
         });
     };
 
@@ -23,7 +23,7 @@ export const PumpTile: React.FunctionComponent<PumpTileProps> = ({ pumpId }) => 
         <div className={styles.pumpTile} onClick={activatePump}>
             <div className={styles.title}>Pump {pumpId}</div>
             <div className={styles.value}>
-                <span>Launch 4s</span>
+                <span>Launch 6s</span>
             </div>
         </div>
     );
