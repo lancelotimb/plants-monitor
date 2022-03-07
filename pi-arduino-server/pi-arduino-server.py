@@ -16,9 +16,6 @@ RESPONSE_DHT_MEASUREMENT = "DHT $value"
 COMMAND_GET_HUMIDITY = "GET_HUMIDITY"
 COMMAND_GET_DHT = "GET_DHT"
 
-# Command Messages Queue
-COMMANDS_QUEUE = []
-
 
 def create_connection():
     database = '../database/database.db'
@@ -34,10 +31,24 @@ def read_commands_queue(connection):
     cursor = connection.cursor()
     cursor.execute("SELECT * from commands_queue WHERE read = 0 LIMIT 1")
     records = cursor.fetchall()
-    command = records[0] if len(records > 0) else None
+    command = records[0] if len(records) > 0 else None
+    cursor.close()
+    
     if (command):
-        cursor.execute("UPDATE commands_queue SET read = 1 WHERE id = ?", command[0])
-        COMMANDS_QUEUE.append(command[1])
+        cursor = connection.cursor()
+        cursor.execute('UPDATE commands_queue SET read = 1 WHERE id = ?', (command[0],))
+        connection.commit()
+        cursor.close()
+        return (command[1], command[0])
+    
+    return (None, None)
+
+def set_command_executed(connection, id):
+    print("executed")
+    cursor = connection.cursor()
+    cursor.execute('UPDATE commands_queue SET executed = 1 WHERE id = ?', (id,))
+    connection.commit()
+    cursor.close()
 
 
 def record_humidity_measurement(connection, data):
@@ -127,13 +138,17 @@ def main():
                 time.sleep(3) # Needed for connection to initialize?
                 while True:
                     # Fetch the last command from the database
-                    read_commands_queue()
+                    (queue_command, queue_command_id) = read_commands_queue(connection)
 
                     # The next command is read from the commands queue in priority, then from the reapeated commands list
-                    current_command = COMMANDS_QUEUE.pop(0) if len(COMMANDS_QUEUE) > 0 else None
-                    if (not current_command):
-                        current_command = queue_command if queue_command else repeated_commands[iteration % nb_repeated_commands]
+                    current_command = None
+                    if (not queue_command):
+                        current_command = repeated_commands[iteration % nb_repeated_commands]
                         iteration += 1
+                    else:
+                        current_command = queue_command
+                    
+                    print(current_command)
 
                     arduino.write(current_command.encode())
 
@@ -143,6 +158,10 @@ def main():
                     if arduino.inWaiting() > 0:
                         answer = arduino.readline().decode("utf-8").rstrip()
                         interpret_answer(connection, answer)
+                        
+                        # Set command as "executed"
+                        if (queue_command_id):
+                            set_command_executed(connection, queue_command_id)
 
                         # Remove data after reading
                         arduino.flushInput()
