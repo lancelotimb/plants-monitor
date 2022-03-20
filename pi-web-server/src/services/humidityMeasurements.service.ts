@@ -1,7 +1,7 @@
 import { HumidityMeasurement } from '../types/types';
 import { selectQuery } from './db.service';
 
-const GET_MEASUREMENTS_QUERY = 'SELECT date, value FROM humidity_measurements';
+const GET_MEASUREMENTS_QUERY = 'SELECT date, value FROM humidity_measurements LIMIT 100';
 
 type DatabaseHumidityMeasurement = {
     date: number;
