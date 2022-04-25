@@ -3,6 +3,6 @@ import { waterAllCommandController } from '../controllers/specialCommandsQueue.c
 
 const router = express.Router();
 
-router.post('/water-all', waterAllCommandController);
+router.get('/water-all', waterAllCommandController);
 
 export default router;
